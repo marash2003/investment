@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Deployment | InvestCore Global</title>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #030303;
+            --panel: #0a0a0a;
+            --gold: #c5a059;
+            --border: rgba(255, 255, 255, 0.05);
+            --text-dim: #666;
+            --success: #00ffaa;
+            --sidebar-w: 250px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: #fff; display: flex; min-height: 100vh; font-size: 13px; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: var(--sidebar-w); background: #000; border-right: 1px solid var(--border); padding: 30px; position: fixed; height: 100vh; transition: 0.3s; z-index: 100; }
+        .nav-item { display: flex; align-items: center; gap: 15px; padding: 12px; color: var(--text-dim); text-decoration: none; transition: 0.3s; margin-bottom: 5px; }
+        .nav-item:hover, .nav-item.active { color: var(--gold); background: rgba(197, 160, 89, 0.05); border-radius: 4px; }
+
+        /* --- MOBILE NAV (Bottom Bar) --- */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1px solid var(--border); padding: 10px 0; z-index: 1000; justify-content: space-around; }
+        .mobile-nav a { color: var(--text-dim); text-decoration: none; font-size: 20px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .mobile-nav a.active { color: var(--gold); }
+        .mobile-nav span { font-size: 9px; text-transform: uppercase; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { margin-left: var(--sidebar-w); flex: 1; padding: 60px; max-width: 1300px; transition: 0.3s; }
+        .page-header { margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .page-header h1 { font-weight: 200; font-size: 2.2rem; letter-spacing: -1px; }
+
+        /* --- INVESTMENT GRID --- */
+        .section-label { font-size: 10px; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; display: block; }
+        
+        .investment-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 50px; }
+        .plan-card { 
+            background: var(--panel); border: 1px solid var(--border); padding: 25px; border-radius: 2px; 
+            cursor: pointer; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .plan-card:hover, .plan-card.active { border-color: var(--gold); transform: translateY(-5px); background: #0f0f0f; }
+        .plan-card.active::after { content: 'SELECTED'; position: absolute; top: 10px; right: 10px; font-size: 8px; color: var(--gold); border: 1px solid var(--gold); padding: 2px 5px; }
+        
+        .plan-card h3 { font-size: 14px; margin-bottom: 10px; font-weight: 400; }
+        .plan-card .roi-badge { color: var(--success); font-weight: 700; font-size: 16px; margin-bottom: 15px; display: block; }
+        .plan-card .details { font-size: 10px; color: var(--text-dim); text-transform: uppercase; line-height: 1.8; }
+
+        /* --- CALCULATION & PAYMENT AREA --- */
+        .deployment-zone { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; margin-bottom: 40px; }
+        
+        .control-panel { background: var(--panel); border: 1px solid var(--border); padding: 40px; }
+        .input-group { margin-bottom: 30px; }
+        .input-group label { display: block; font-size: 10px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        
+        input { width: 100%; background: #000; border: 1px solid var(--border); padding: 15px; color: #fff; font-size: 1.1rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--gold); }
+
+        .qty-box { display: flex; align-items: center; justify-content: space-between; background: #000; padding: 15px; border: 1px solid var(--border); }
+        .qty-btn { background: var(--gold); border: none; width: 40px; height: 40px; cursor: pointer; font-size: 20px; font-weight: bold; }
+        #qty-num { font-size: 20px; font-weight: 700; }
+
+        .payment-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .pay-card { background: #000; border: 1px solid var(--border); padding: 15px; text-align: center; cursor: pointer; transition: 0.2s; font-size: 11px; }
+        .pay-card:hover, .pay-card.active { border-color: var(--gold); color: var(--gold); }
+        .pay-card i { font-size: 1.5rem; display: block; margin-bottom: 8px; }
+
+        /* --- DYNAMIC PAYMENT INFO --- */
+        #payment-info-box { margin-top: 25px; padding: 20px; background: #000; border: 1px solid var(--border); border-radius: 4px; animation: fadeIn 0.3s; }
+        .method-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .full-width { grid-column: span 2; }
+        .field-label { font-size: 9px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; display: block; }
+
+        /* --- SUMMARY INVOICE --- */
+        .summary-invoice { background: #000; border: 1px solid var(--border); padding: 30px; height: fit-content; border-top: 3px solid var(--gold); }
+        .inv-row { display: flex; justify-content: space-between; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); padding-bottom: 10px; }
+        .inv-total { font-size: 22px; color: var(--gold); font-weight: 700; margin-top: 20px; }
+
+        .btn-deploy { width: 100%; background: var(--gold); color: #000; padding: 20px; border: none; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; margin-top: 25px; transition: 0.3s; }
+        .btn-deploy:hover { opacity: 0.8; letter-spacing: 4px; }
+
+        .hidden { display: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .sidebar { display: none; }
+            .mobile-nav { display: flex; }
+            .main-content { margin-left: 0; padding: 40px 20px 100px 20px; }
+            .investment-grid { grid-template-columns: repeat(2, 1fr); }
+            .deployment-zone { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .investment-grid { grid-template-columns: 1fr; }
+            .payment-grid { grid-template-columns: repeat(2, 1fr); }
+            .page-header h1 { font-size: 1.8rem; }
+            .control-panel { padding: 25px; }
+            .method-field-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div style="margin-bottom: 50px; color: var(--gold); letter-spacing: 5px; font-size: 10px; text-align: center;">INVESTCORE</div>
+        <nav>
+            <a href="dashboard.html" class="nav-item"><i class="ph ph-chart-line-up"></i> Dashboard</a>
+            <a href="deposit.html" class="nav-item active"><i class="ph ph-bank"></i> Invest</a>
+            <a href="ledger.html" class="nav-item"><i class="ph ph-receipt"></i> Ledger</a>
+            <a href="settings.html" class="nav-item"><i class="ph ph-sliders-horizontal"></i> Settings</a>
+        </nav>
+    </aside>
+
+    <nav class="mobile-nav">
+        <a href="dashboard.html"><i class="ph ph-chart-line-up"></i><span>Home</span></a>
+        <a href="deposit.html" class="active"><i class="ph ph-bank"></i><span>Invest</span></a>
+        <a href="#"><i class="ph ph-receipt"></i><span>Ledger</span></a>
+        <a href="settings.html"><i class="ph ph-sliders-horizontal"></i><span>Settings</span></a>
+    </nav>
+
+    <main class="main-content">
+        <header class="page-header" data-aos="fade-down">
+            <h1>Market <b>Deployments</b></h1>
+            <p style="color: var(--text-dim);">Select an institutional strategy and allocate capital.</p>
+        </header>
+
+        <span class="section-label">1. Select Strategy</span>
+        <div class="investment-grid">
+            <div class="plan-card active" onclick="selectPlan('micro', 0.5, 7, 5, 'Micro Starter')">
+                <h3>Micro Starter</h3>
+                <span class="roi-badge">3.5% Total</span>
+                <p class="details">Duration: 7 Days<br>Min Deposit: $5</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('micro', 0.8, 14, 50, 'Flexi Growth')">
+                <h3>Flexi Growth</h3>
+                <span class="roi-badge">11.2% Total</span>
+                <p class="details">Duration: 14 Days<br>Min Deposit: $50</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('contract', 1.5, 30, 100, 'Standard Contract')">
+                <h3>Standard Contract</h3>
+                <span class="roi-badge">45% Total</span>
+                <p class="details">Duration: 30 Days<br>1 Unit: $100</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('contract', 2.0, 60, 100, 'Executive Unit')">
+                <h3>Executive Unit</h3>
+                <span class="roi-badge">120% Total</span>
+                <p class="details">Duration: 60 Days<br>1 Unit: $100</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('fixed', 2.5, 90, 500, 'Gold Fixed')">
+                <h3>Gold Fixed</h3>
+                <span class="roi-badge">225% Total</span>
+                <p class="details">Duration: 90 Days<br>Min: $500</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('fixed', 2.8, 180, 1000, 'Platinum Bond')">
+                <h3>Platinum Bond</h3>
+                <span class="roi-badge">504% Total</span>
+                <p class="details">Duration: 180 Days<br>Min: $1000</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('fixed', 3.2, 365, 5000, 'Legacy Vault')">
+                <h3>Legacy Vault</h3>
+                <span class="roi-badge">1168% Total</span>
+                <p class="details">Duration: 1 Year<br>Min: $5000</p>
+            </div>
+            <div class="plan-card" onclick="selectPlan('fixed', 4.0, 730, 10000, 'Sovereign Fund')">
+                <h3>Sovereign Fund</h3>
+                <span class="roi-badge">2920% Total</span>
+                <p class="details">Duration: 2 Years<br>Min: $10k</p>
+            </div>
+        </div>
+
+        <div class="deployment-zone">
+            <div class="control-panel" data-aos="fade-up">
+                <div class="input-group">
+                    <label>2. Allocation Amount</label>
+                    <div id="normal-input">
+                        <input type="number" id="amt-input" value="5" oninput="calculate()">
+                    </div>
+                    <div id="contract-input" class="hidden">
+                        <div class="qty-box">
+                            <button class="qty-btn" onclick="adjQty(-1)">-</button>
+                            <span id="qty-num">1</span>
+                            <button class="qty-btn" onclick="adjQty(1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>3. Payment Gateway</label>
+                    <div class="payment-grid">
+                        <div class="pay-card active" onclick="setPayment('paypal')"><i class="ph ph-paypal-logo"></i>PayPal</div>
+                        <div class="pay-card" onclick="setPayment('momo')"><i class="ph ph-device-mobile"></i>Mobile Money</div>
+                        <div class="pay-card" onclick="setPayment('crypto')"><i class="ph ph-currency-btc"></i>Crypto</div>
+                        <div class="pay-card" onclick="setPayment('bank')"><i class="ph ph-bank"></i>Bank Wire</div>
+                        <div class="pay-card" onclick="setPayment('card')"><i class="ph ph-credit-card"></i>Visa/MC</div>
+                        <div class="pay-card" onclick="setPayment('gpay')"><i class="ph ph-google-logo"></i>G-Pay</div>
+                    </div>
+
+                    <div id="payment-info-box">
+                        </div>
+                </div>
+            </div>
+
+            <div class="summary-invoice" data-aos="fade-left">
+                <span class="section-label" style="text-align: center;">Summary Invoice</span>
+                <div class="inv-row"><span>Plan:</span><b id="inv-name">Micro Starter</b></div>
+                <div class="inv-row"><span>Invested:</span><b id="inv-principal">$5.00</b></div>
+                <div class="inv-row"><span>Total Profit:</span><b id="inv-profit" style="color:var(--success)">+$0.18</b></div>
+                <div class="inv-row"><span>Return Date:</span><b id="inv-date">Feb 19, 2026</b></div>
+                <div class="inv-total">Total Return: <span id="inv-total">$5.18</span></div>
+                
+                <button class="btn-deploy" onclick="alert('Processing Transaction...')">Initialize Deployment</button>
+                <p style="font-size: 9px; color: var(--text-dim); text-align: center; margin-top: 15px;">Securely encrypted by InvestCore Protocol 2.0</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true });
+
+        let currentType = 'micro';
+        let currentRoi = 0.5;
+        let currentDays = 7;
+        let currentMin = 5;
+        let currentName = 'Micro Starter';
+        let qty = 1;
+
+        function setPayment(method) {
+            document.querySelectorAll('.pay-card').forEach(p => p.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            const box = document.getElementById('payment-info-box');
+            let html = "";
+
+            if (method === 'card') {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">Credit / Debit Card</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">Card Number</span>
+                            <input type="text" placeholder="0000 0000 0000 0000">
+                        </div>
+                        <div>
+                            <span class="field-label">Expiry Date</span>
+                            <input type="text" placeholder="MM / YY">
+                        </div>
+                        <div>
+                            <span class="field-label">CVV</span>
+                            <input type="password" placeholder="***">
+                        </div>
+                    </div>`;
+            } else if (method === 'momo') {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">Mobile Money</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">Network Number (MTN/Orange)</span>
+                            <input type="tel" placeholder="6xx xxx xxx">
+                        </div>
+                        <div class="full-width">
+                            <span class="field-label">Account Owner Name</span>
+                            <input type="text" placeholder="Full Name">
+                        </div>
+                    </div>`;
+            } else if (method === 'paypal') {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">PayPal Transfer</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">PayPal Email Address</span>
+                            <input type="email" placeholder="email@example.com">
+                        </div>
+                    </div>`;
+            } else if (method === 'crypto') {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">Cryptocurrency (BTC)</p>
+                    <p style="color: var(--text-dim); font-size: 10px; margin-bottom:10px;">Send to: bc1qxy2kgdy6jrsqtzq2n0yrf2493p83kkfjhx0wlh</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">Your Wallet Address (for verification)</span>
+                            <input type="text" placeholder="bc1q...">
+                        </div>
+                    </div>`;
+            } else if (method === 'bank') {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">Bank Wire Transfer</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">Sender Account Name</span>
+                            <input type="text" placeholder="John Doe">
+                        </div>
+                        <div class="full-width">
+                            <span class="field-label">Transaction Reference #</span>
+                            <input type="text" placeholder="Ref: 991823">
+                        </div>
+                    </div>`;
+            } else {
+                html = `
+                    <p style="color: var(--gold); margin-bottom: 10px; font-weight: bold;">Digital Wallet</p>
+                    <div class="method-field-grid">
+                        <div class="full-width">
+                            <span class="field-label">Account Reference</span>
+                            <input type="text" placeholder="G-Pay Email or Phone">
+                        </div>
+                    </div>`;
+            }
+
+            box.innerHTML = html;
+        }
+
+        // Initialize with first method
+        window.onload = () => setPayment('paypal');
+
+        function selectPlan(type, roi, days, min, name) {
+            currentType = type;
+            currentRoi = roi;
+            currentDays = days;
+            currentMin = min;
+            currentName = name;
+            document.querySelectorAll('.plan-card').forEach(p => p.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+
+            if(type === 'contract') {
+                document.getElementById('normal-input').classList.add('hidden');
+                document.getElementById('contract-input').classList.remove('hidden');
+            } else {
+                document.getElementById('normal-input').classList.remove('hidden');
+                document.getElementById('contract-input').classList.add('hidden');
+                document.getElementById('amt-input').value = min;
+            }
+            calculate();
+        }
+
+        function adjQty(val) {
+            qty += val;
+            if(qty < 1) qty = 1;
+            document.getElementById('qty-num').innerText = qty;
+            calculate();
+        }
+
+        function calculate() {
+            let principal = (currentType === 'contract') ? (qty * 100) : (parseFloat(document.getElementById('amt-input').value) || 0);
+            let profit = principal * (currentRoi / 100) * currentDays;
+            let total = principal + profit;
+
+            document.getElementById('inv-name').innerText = currentName;
+            document.getElementById('inv-principal').innerText = '$' + principal.toLocaleString();
+            document.getElementById('inv-profit').innerText = '+$' + profit.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('inv-total').innerText = '$' + total.toLocaleString(undefined, {minimumFractionDigits: 2});
+
+            let d = new Date();
+            d.setDate(d.getDate() + currentDays);
+            document.getElementById('inv-date').innerText = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        calculate();
+        
+    </script>
+</body>
+</html>

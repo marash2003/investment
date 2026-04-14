@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Protocols | InvestCore Global</title>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #030303;
+            --card: #0d0d0d;
+            --gold: #c5a059;
+            --text: #ffffff;
+            --dim: #a0a0a0;
+            --border: rgba(255, 255, 255, 0.08);
+            --safe-green: #00ffaa;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); line-height: 1.7; overflow-x: hidden; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; background: rgba(3, 3, 3, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.1rem; letter-spacing: 5px; color: var(--gold); text-decoration: none; text-transform: uppercase; }
+        .nav-links a { text-decoration: none; color: var(--dim); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-left: 30px; }
+
+        /* --- HERO --- */
+        .sec-hero { padding: 120px 8% 60px; text-align: left; background: radial-gradient(circle at top right, #111 0%, #030303 50%); }
+        .tag { color: var(--gold); font-size: 10px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 15px; display: block; }
+        .sec-hero h1 { font-size: 3.5rem; font-weight: 200; margin-bottom: 20px; }
+        .sec-hero p { color: var(--dim); max-width: 800px; font-size: 1.1rem; }
+
+        /* --- CORE PROTECTION GRID --- */
+        .protection-grid { padding: 60px 8% 100px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .prot-card { background: var(--card); border: 1px solid var(--border); padding: 50px 35px; transition: 0.4s; }
+        .prot-card:hover { border-color: var(--gold); background: #111; }
+        .prot-card i { font-size: 2.5rem; color: var(--gold); margin-bottom: 25px; display: block; }
+        .prot-card h3 { font-size: 1.3rem; font-weight: 400; margin-bottom: 15px; }
+        .prot-card p { font-size: 0.9rem; color: var(--dim); }
+
+        /* --- DETAILED COMPLIANCE --- */
+        .compliance-section { padding: 100px 8%; background: #070707; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .comp-flex { display: flex; gap: 80px; align-items: flex-start; }
+        .comp-text { flex: 1; }
+        .comp-text h2 { font-size: 2.2rem; font-weight: 300; margin-bottom: 30px; }
+        .comp-item { margin-bottom: 40px; }
+        .comp-item h4 { color: var(--gold); margin-bottom: 10px; font-weight: 500; text-transform: uppercase; font-size: 0.9rem; }
+        
+        /* --- SECURITY DASHBOARD MOCKUP --- */
+        .sec-mockup { flex: 1; background: #000; border: 1px solid var(--gold); border-radius: 8px; padding: 30px; box-shadow: 0 0 50px rgba(197, 160, 89, 0.1); }
+        .mockup-header { border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { color: var(--safe-green); font-size: 10px; font-weight: 700; border: 1px solid var(--safe-green); padding: 4px 10px; border-radius: 20px; }
+        .mockup-line { height: 8px; background: #111; margin-bottom: 15px; border-radius: 4px; overflow: hidden; position: relative; }
+        .mockup-line::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; background: var(--gold); width: 65%; }
+
+        /* --- FAQ / FOOTER --- */
+        .faq-banner { padding: 100px 8%; text-align: center; }
+        .faq-banner h2 { font-weight: 200; margin-bottom: 40px; }
+        .btn-sec { display: inline-block; padding: 18px 40px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+        
+        footer { padding: 60px 8%; text-align: center; border-top: 1px solid var(--border); color: #444; font-size: 10px; letter-spacing: 2px; }
+
+        @media (max-width: 1000px) {
+            .protection-grid, .comp-flex { grid-template-columns: 1fr; flex-direction: column; }
+            .sec-hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">INGRO</a>
+        <div class="nav-links">
+            <a href="about.html">Our Firm</a>
+            <a href="operations.html">How It Works</a>
+            <a href="register.html" style="color: var(--gold);">Secure Login</a>
+        </div>
+    </nav>
+
+    <header class="sec-hero">
+        <span class="tag" data-aos="fade-down">Client Asset Protection</span>
+        <h1 data-aos="fade-up">Defense-Grade <b>Security.</b></h1>
+        <p data-aos="fade-up" data-aos-delay="100">At INGRO Global, we believe security is not an option it is the foundation of our firm. Since we operate without a public office, we invest 100% of our security budget into digital vaulting and private account protection.</p>
+    </header>
+
+    
+    <section class="protection-grid">
+        <div class="prot-card" data-aos="fade-up">
+            <i class="ph ph-vault"></i>
+            <h3>Fund Isolation</h3>
+            <p>Your money is never mixed with the company’s daily operating cash. Every client’s capital is held in a "segregated" private account, meaning it is only ever used for your specific investment plan.</p>
+        </div>
+        <div class="prot-card" data-aos="fade-up" data-aos-delay="100">
+            <i class="ph ph-shield-checkered"></i>
+            <h3>End-to-End Encryption</h3>
+            <p>Every piece of data you enter from your name to your withdrawal requests is protected by 256-bit SSL encryption. This is the same level of security used by global military organizations.</p>
+        </div>
+        <div class="prot-card" data-aos="fade-up" data-aos-delay="200">
+            <i class="ph ph-device-mobile-speaker"></i>
+            <h3>Withdrawal Verification</h3>
+            <p>To prevent unauthorized access, every withdrawal request requires multi-step approval. No money leaves the system without a confirmed verification from your registered secure device.</p>
+        </div>
+    </section>
+
+    <section class="compliance-section">
+        <div class="comp-flex">
+            <div class="comp-text" data-aos="fade-right">
+                <h2>Our Three Pillars of <b>Digital Safety.</b></h2>
+                
+                <div class="comp-item">
+                    <h4>1. Zero-Knowledge Infrastructure</h4>
+                    <p>We do not store your passwords in plain text. Our "Zero-Knowledge" system means that even if a technician were to look at our servers, they could not see your access codes. Only you hold the key to your account.</p>
+                </div>
+
+                <div class="comp-item">
+                    <h4>2. Real-Time Threat Monitoring</h4>
+                    <p>Our systems are monitored 24/7 by automated security protocols. If our system detects a login attempt from an unusual location or a new device, it instantly locks the account until you personally unlock it.</p>
+                </div>
+
+                <div class="comp-item">
+                    <h4>3. Capital Reserve Guarantee</h4>
+                    <p>We maintain an "Insurance Fund" that is held in physical liquid cash. This fund is designed to protect our clients' principal investment against extreme market events or technical failures.</p>
+                </div>
+            </div>
+
+            <div class="sec-mockup" data-aos="fade-left">
+                <div class="mockup-header">
+                    <span style="font-size: 12px; letter-spacing: 1px;">SYSTEM STATUS</span>
+                    <span class="status-badge">SECURE / ACTIVE</span>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <p style="font-size: 9px; color: var(--dim); margin-bottom: 5px; text-transform: uppercase;">Encryption Strength</p>
+                    <div class="mockup-line"></div>
+                </div>
+                <div style="margin-bottom: 25px;">
+                    <p style="font-size: 9px; color: var(--dim); margin-bottom: 5px; text-transform: uppercase;">Server Redundancy</p>
+                    <div class="mockup-line" style="width: 100%;"></div>
+                </div>
+                <div style="background: #111; padding: 20px; border-radius: 4px;">
+                    <p style="font-size: 10px; color: var(--gold); margin-bottom: 10px;">LATEST SECURITY AUDIT</p>
+                    <p style="font-size: 11px; color: var(--dim);">February 2026: Passed. All firewalls and cold-storage protocols are operating at 100% capacity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-banner" data-aos="zoom-in">
+        <h2>Have questions about your account safety?</h2>
+        <a href="mailto:support@investcore.global" class="btn-sec">Contact Security Desk</a>
+    </section>
+
+    <footer>
+        <p>INGRO GLOBAL PRIVATE MANAGEMENT &copy; 2026</p>
+        <p style="margin-top: 10px; opacity: 0.4;">Registered Digital Asset Manager. Multi-Jurisdictional Security Compliance.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>

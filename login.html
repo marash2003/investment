@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INGRO | Premium Wealth Portal</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            /* Premium Wealth Palette: Charcoal, Gold, and Bone */
+            --bg-base: #121212;
+            --card-bg: #1e1e1e;
+            --gold-primary: #c5a059;
+            --gold-hover: #e2bd78;
+            --text-main: #ffffff;
+            --text-dim: #a0a0a0;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Added vertical padding so card is never cut off */
+            padding: 60px 20px; 
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Sophisticated "Atmospheric" Animation */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #000 100%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(197, 160, 89, 0.07) 0%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-20%, -20%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            padding: 48px 40px;
+            border-radius: 4px; /* Sharp corners for a more "Architectural" feel */
+            border-top: 4px solid var(--gold-primary);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-section i {
+            font-size: 32px;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.4rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            color: var(--gold-primary);
+        }
+
+        .input-container {
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.3s;
+        }
+
+        .input-container:focus-within {
+            border-color: var(--gold-primary);
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 12px 0;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 1.2rem;
+        }
+
+        .forgot-pass {
+            display: block;
+            text-align: right;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-decoration: none;
+            margin-top: 8px;
+            transition: color 0.2s;
+        }
+
+        .forgot-pass:hover {
+            color: var(--gold-primary);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--gold-primary);
+            color: #000;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 32px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold-hover);
+            letter-spacing: 3px;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 32px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .signup-link a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 1px solid var(--gold-primary);
+        }
+
+        footer {
+            position: relative;
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 0.5px;
+            line-height: 1.8;
+            max-width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="blob"></div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="login-card">
+            <div class="logo-section">
+               
+                <h1>INGRO</h1>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Client Identity</label>
+                    <div class="input-container">
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Security Key</label>
+                    <div class="input-container">
+                        <input type="password" id="pass" placeholder="Password" required>
+                        <i class="ph ph-eye eye-icon" id="toggle"></i>
+                    </div>
+                    <a href="#" class="forgot-pass">Recover Credentials</a>
+                </div>
+
+                <button type="submit" class="btn-submit">Secure Login</button>
+            </form>
+
+            <p class="signup-link">
+                New to the platform? <a href="register.html">Create Account</a>
+            </p>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 INGRO ASSET MANAGEMENT LLC.</p>
+            <p>Authorized Financial Services Provider. Terms of Use & Privacy Policy.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Password visibility logic
+        const toggle = document.querySelector('#toggle');
+        const pass = document.querySelector('#pass');
+
+        toggle.addEventListener('click', () => {
+            const type = pass.getAttribute('type') === 'password' ? 'text' : 'password';
+            pass.setAttribute('type', type);
+            toggle.classList.toggle('ph-eye-slash');
+        });
+
+        // Form Submission
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = "Processing...";
+            setTimeout(() => {
+                alert("Vault access granted.");
+                btn.innerHTML = "Secure Login";
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

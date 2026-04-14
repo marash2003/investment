@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Settings | InvestCore</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg: #030303; --sidebar: #000; --panel: #0a0a0a; --gold: #c5a059;
+            --border: rgba(255, 255, 255, 0.06); --text: #fff; --text-dim: #777;
+        }
+        [data-theme="light"] {
+            --bg: #f4f4f7; --sidebar: #fff; --panel: #fff; --gold: #a6854b;
+            --border: rgba(0, 0, 0, 0.08); --text: #111; --text-dim: #666;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; transition: background 0.3s, color 0.1s; }
+        body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh; overflow-x: hidden; }
+        
+        /* Navigation */
+        .sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 40px 25px; position: fixed; height: 100vh; z-index: 1000; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px; color: var(--text-dim); text-decoration: none; border-radius: 8px; margin-bottom: 5px; font-weight: 500; }
+        .nav-item.active { color: var(--gold); background: rgba(197, 160, 89, 0.08); }
+
+        /* Layout */
+        .main { margin-left: 260px; flex: 1; padding: 60px; max-width: 1200px; }
+        .settings-grid { display: grid; grid-template-columns: 280px 1fr; gap: 40px; }
+        .tab-menu { display: flex; flex-direction: column; gap: 5px; position: sticky; top: 60px; }
+        .tab-btn { padding: 14px 20px; cursor: pointer; border-radius: 8px; color: var(--text-dim); display: flex; align-items: center; gap: 12px; font-size: 14px; transition: 0.2s; border: 1px solid transparent; }
+        .tab-btn.active { background: var(--panel); color: var(--gold); border-color: var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+        /* Panels */
+        .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 40px; display: none; animation: slideUp 0.4s ease; }
+        .panel.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .panel-header { margin-bottom: 30px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .panel-header h2 { font-size: 20px; font-weight: 500; }
+
+        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; border-bottom: 1px solid var(--border); }
+        .setting-item:last-child { border-bottom: none; }
+        .info h4 { font-size: 15px; font-weight: 600; margin-bottom: 5px; }
+        .info p { font-size: 12px; color: var(--text-dim); max-width: 400px; line-height: 1.5; }
+        
+        /* Controls */
+        select, input { background: var(--bg); border: 1px solid var(--border); padding: 12px 15px; color: var(--text); border-radius: 6px; outline: none; min-width: 180px; }
+        .btn-gold { background: var(--gold); color: #000; padding: 12px 25px; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+        
+        /* Switch */
+        .switch { position: relative; width: 44px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #333; border-radius: 20px; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .4s; }
+        input:checked + .slider { background: var(--gold); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* RTL Handling */
+        [dir="rtl"] .sidebar { left: auto; right: 0; border-right: none; border-left: 1px solid var(--border); }
+        [dir="rtl"] .main { margin-left: 0; margin-right: 260px; }
+        [dir="rtl"] .switch input:checked + .slider:before { transform: translateX(-22px); }
+
+        @media (max-width: 1024px) {
+            .sidebar { display: none; } .main { margin-left: 0; padding: 30px 20px; }
+            .settings-grid { grid-template-columns: 1fr; }
+            .tab-menu { flex-direction: row; overflow-x: auto; padding-bottom: 15px; position: static; }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <aside class="sidebar">
+        <div style="color: var(--gold); letter-spacing: 5px; font-size: 10px; margin-bottom: 50px; text-align: center; font-weight: 900;">INVESTCORE</div>
+        <nav>
+            <a href="dashboard.html" class="nav-item"><i class="ph ph-squares-four"></i> <span class="trn" data-key="nav-dash">Dashboard</span></a>
+            <a href="#" class="nav-item active"><i class="ph ph-user-gear"></i> <span class="trn" data-key="nav-set">Settings</span></a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <h1 class="trn" data-key="page-title" style="margin-bottom: 40px; font-weight: 200; font-size: 2.5rem;">System Preferences</h1>
+        
+        <div class="settings-grid">
+            <div class="tab-menu">
+                <div class="tab-btn active" onclick="showTab(event, 'prof')"><i class="ph ph-user-circle"></i> <span class="trn" data-key="tab-prof">Profile</span></div>
+                <div class="tab-btn" onclick="showTab(event, 'view')"><i class="ph ph-palette"></i> <span class="trn" data-key="tab-view">Interface</span></div>
+                <div class="tab-btn" onclick="showTab(event, 'sec')"><i class="ph ph-shield-check"></i> <span class="trn" data-key="tab-sec">Security</span></div>
+                <div class="tab-btn" onclick="showTab(event, 'notif')"><i class="ph ph-bell"></i> <span class="trn" data-key="tab-notif">Alerts</span></div>
+            </div>
+
+            <div class="content">
+                <section id="prof" class="panel active">
+                    <div class="panel-header"><h2 class="trn" data-key="tab-prof">Profile</h2></div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-name">Full Name</h4><p class="trn" data-key="desc-name">Your name as shown on account records.</p></div>
+                        <input type="text" value="Alexander Sterling">
+                    </div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-lang">Language</h4><p class="trn" data-key="desc-lang">Choose your display language.</p></div>
+                        <select id="langPicker" onchange="applyLanguage()">
+                            <option value="en">English (US)</option>
+                            <option value="fr">Français</option>
+                            <option value="es">Español</option>
+                            <option value="de">Deutsch</option>
+                            <option value="it">Italiano</option>
+                            <option value="pt">Português</option>
+                            <option value="ru">Русский</option>
+                            <option value="zh">中文</option>
+                            <option value="jp">日本語</option>
+                            <option value="ar">العربية</option>
+                        </select>
+                    </div>
+                    <button class="btn-gold trn" data-key="btn-save">Save Changes</button>
+                </section>
+
+                <section id="view" class="panel">
+                    <div class="panel-header"><h2 class="trn" data-key="tab-view">Interface</h2></div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-theme">Dark Mode</h4><p class="trn" data-key="desc-theme">Adjust system brightness.</p></div>
+                        <label class="switch"><input type="checkbox" id="themeToggle" onchange="toggleTheme()"><span class="slider"></span></label>
+                    </div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-hide">Privacy Mode</h4><p class="trn" data-key="desc-hide">Hide balances on main page.</p></div>
+                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                    </div>
+                </section>
+
+                <section id="sec" class="panel">
+                    <div class="panel-header"><h2 class="trn" data-key="tab-sec">Security</h2></div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-pass">Password</h4><p class="trn" data-key="desc-pass">Last changed 30 days ago.</p></div>
+                        <button class="btn-gold trn" data-key="btn-upd">Update</button>
+                    </div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-2fa">Two-Factor Auth</h4><p class="trn" data-key="desc-2fa">Adds an extra layer of protection.</p></div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </section>
+
+                <section id="notif" class="panel">
+                    <div class="panel-header"><h2 class="trn" data-key="tab-notif">Alerts</h2></div>
+                    <div class="setting-item">
+                        <div class="info"><h4 class="trn" data-key="label-email">Email Alerts</h4><p class="trn" data-key="desc-email">Receive alerts for every transaction.</p></div>
+                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const i18n = {
+            en: { "page-title": "System Preferences", "nav-dash": "Dashboard", "nav-set": "Settings", "tab-prof": "Profile", "tab-view": "Interface", "tab-sec": "Security", "tab-notif": "Alerts", "label-name": "Full Name", "desc-name": "Your name as shown on account records.", "label-lang": "Language", "desc-lang": "Choose your display language.", "label-theme": "Dark Mode", "desc-theme": "Adjust system brightness.", "label-hide": "Privacy Mode", "desc-hide": "Hide balances on main page.", "label-pass": "Password", "desc-pass": "Last changed 30 days ago.", "label-2fa": "Two-Factor Auth", "desc-2fa": "Adds extra protection.", "label-email": "Email Alerts", "desc-email": "Receive alerts for transactions.", "btn-save": "Save Changes", "btn-upd": "Update" },
+            fr: { "page-title": "Préférences Système", "nav-dash": "Tableau de Bord", "nav-set": "Paramètres", "tab-prof": "Profil", "tab-view": "Interface", "tab-sec": "Sécurité", "tab-notif": "Alertes", "label-name": "Nom Complet", "desc-name": "Votre nom tel qu'il apparaît sur les dossiers.", "label-lang": "Langue", "desc-lang": "Choisissez votre langue d'affichage.", "label-theme": "Mode Sombre", "desc-theme": "Ajuster la luminosité du système.", "label-hide": "Mode Privé", "desc-hide": "Masquer les soldes sur la page principale.", "label-pass": "Mot de Passe", "desc-pass": "Modifié il y a 30 jours.", "label-2fa": "Authentification 2FA", "desc-2fa": "Ajoute une protection supplémentaire.", "label-email": "Alertes Email", "desc-email": "Recevoir des alertes pour les transactions.", "btn-save": "Enregistrer", "btn-upd": "Modifier" },
+            es: { "page-title": "Preferencias del Sistema", "nav-dash": "Tablero", "nav-set": "Ajustes", "tab-prof": "Perfil", "tab-view": "Interfaz", "tab-sec": "Seguridad", "tab-notif": "Alertas", "label-name": "Nombre Completo", "desc-name": "Su nombre como aparece en los registros.", "label-lang": "Idioma", "desc-lang": "Elija su idioma de visualización.", "label-theme": "Modo Oscuro", "desc-theme": "Ajustar el brillo del sistema.", "label-hide": "Modo Privacidad", "desc-hide": "Ocultar saldos en la página principal.", "label-pass": "Contraseña", "desc-pass": "Cambiado hace 30 días.", "label-2fa": "Autenticación 2FA", "desc-2fa": "Agrega protección adicional.", "label-email": "Alertas de Email", "desc-email": "Recibir alertas de transacciones.", "btn-save": "Guardar", "btn-upd": "Actualizar" },
+            de: { "page-title": "Systemeinstellungen", "nav-dash": "Dashboard", "nav-set": "Einstellungen", "tab-prof": "Profil", "tab-view": "Oberfläche", "tab-sec": "Sicherheit", "tab-notif": "Benachrichtigungen", "label-name": "Vollständiger Name", "desc-name": "Ihr Name, wie er in den Unterlagen steht.", "label-lang": "Sprache", "desc-lang": "Wählen Sie Ihre Anzeigesprache.", "label-theme": "Dunkelmodus", "desc-theme": "Systemhelligkeit anpassen.", "label-hide": "Privatmodus", "desc-hide": "Guthaben auf der Hauptseite ausblenden.", "label-pass": "Passwort", "desc-pass": "Zuletzt vor 30 Tagen geändert.", "label-2fa": "2-Faktor-Auth", "desc-2fa": "Zusätzlicher Schutz.", "label-email": "E-Mail-Benachrichtigung", "desc-email": "Transaktionsalarme erhalten.", "btn-save": "Speichern", "btn-upd": "Aktualisieren" },
+            ar: { "page-title": "تفضيلات النظام", "nav-dash": "لوحة القيادة", "nav-set": "الإعدادات", "tab-prof": "الملف الشخصي", "tab-view": "الواجهة", "tab-sec": "الأمان", "tab-notif": "التنبيهات", "label-name": "الاسم الكامل", "desc-name": "اسمك كما يظهر في سجلات الحساب.", "label-lang": "اللغة", "desc-lang": "اختر لغة العرض الخاصة بك.", "label-theme": "الوضع الداكن", "desc-theme": "ضبط سطوع النظام.", "label-hide": "وضع الخصوصية", "desc-hide": "إخفاء الأرصدة في الصفحة الرئيسية.", "label-pass": "كلمة المرور", "desc-pass": "تم التغيير منذ 30 يومًا.", "label-2fa": "المصادقة الثنائية", "desc-2fa": "يضيف طبقة حماية إضافية.", "label-email": "تنبيهات البريد", "desc-email": "تلقي تنبيهات لكل معاملة.", "btn-save": "حفظ التغييرات", "btn-upd": "تحديث" },
+            ru: { "page-title": "Настройки системы", "nav-dash": "Панель", "nav-set": "Настройки", "tab-prof": "Профиль", "tab-view": "Интерфейс", "tab-sec": "Безопасность", "tab-notif": "Уведомления", "label-name": "Полное имя", "desc-name": "Ваше имя в официальных записях.", "label-lang": "Язык", "desc-lang": "Выберите язык интерфейса.", "label-theme": "Темная тема", "desc-theme": "Настройка яркости системы.", "label-hide": "Приватный режим", "desc-hide": "Скрыть баланс на главной странице.", "label-pass": "Пароль", "desc-pass": "Изменен 30 дней назад.", "label-2fa": "2FA защита", "desc-2fa": "Дополнительный уровень защиты.", "label-email": "Email уведомления", "desc-email": "Оповещения о транзакциях.", "btn-save": "Сохранить", "btn-upd": "Обновить" },
+            zh: { "page-title": "系统偏好设置", "nav-dash": "控制面板", "nav-set": "设置", "tab-prof": "个人资料", "tab-view": "界面", "tab-sec": "安全", "tab-notif": "通知", "label-name": "全名", "desc-name": "您在账户记录中显示的姓名。", "label-lang": "语言", "desc-lang": "选择您的显示语言。", "label-theme": "深色模式", "desc-theme": "调整系统亮度。", "label-hide": "隐私模式", "desc-hide": "在主页隐藏余额。", "label-pass": "密码", "desc-pass": "30天前更改。", "label-2fa": "双重身份验证", "desc-2fa": "增加额外保护。", "label-email": "邮件通知", "desc-email": "接收每笔交易的提醒。", "btn-save": "保存更改", "btn-upd": "更新" },
+            jp: { "page-title": "システム設定", "nav-dash": "ダッシュボード", "nav-set": "設定", "tab-prof": "プロフィール", "tab-view": "インターフェース", "tab-sec": "セキュリティ", "tab-notif": "通知", "label-name": "フルネーム", "desc-name": "アカウントに登録されている名前。", "label-lang": "言語", "desc-lang": "表示言語を選択してください。", "label-theme": "ダークモード", "desc-theme": "システムの明るさを調整。", "label-hide": "プライバシーモード", "desc-hide": "メインページの残高を非表示。", "label-pass": "パスワード", "desc-pass": "30日前に変更済み。", "label-2fa": "二要素認証", "desc-2fa": "セキュリティを強化します。", "label-email": "メール通知", "desc-email": "取引通知を受け取る。", "btn-save": "変更を保存", "btn-upd": "更新" },
+            it: { "page-title": "Preferenze di Sistema", "nav-dash": "Cruscotto", "nav-set": "Impostazioni", "tab-prof": "Profilo", "tab-view": "Interfaccia", "tab-sec": "Sicurezza", "tab-notif": "Avvisi", "label-name": "Nome Completo", "desc-name": "Il tuo nome nei registri ufficiali.", "label-lang": "Lingua", "desc-lang": "Scegli la lingua del display.", "label-theme": "Modalità Scura", "desc-theme": "Regola la luminosità del sistema.", "label-hide": "Privacy", "desc-hide": "Nascondi i saldi nella pagina principale.", "label-pass": "Password", "desc-pass": "Modificata 30 giorni fa.", "label-2fa": "Autenticazione 2FA", "desc-2fa": "Aggiunge ulteriore protezione.", "label-email": "Avvisi Email", "desc-email": "Ricevi avvisi per ogni transazione.", "btn-save": "Salva", "btn-upd": "Aggiorna" },
+            pt: { "page-title": "Preferências do Sistema", "nav-dash": "Painel", "nav-set": "Configurações", "tab-prof": "Perfil", "tab-view": "Interface", "tab-sec": "Segurança", "tab-notif": "Alertas", "label-name": "Nome Completo", "desc-name": "Seu nome conforme os registros.", "label-lang": "Idioma", "desc-lang": "Escolha o idioma de exibição.", "label-theme": "Modo Escuro", "desc-theme": "Ajustar brilho do sistema.", "label-hide": "Privacidade", "desc-hide": "Ocultar saldos na página principal.", "label-pass": "Senha", "desc-pass": "Alterada há 30 dias.", "label-2fa": "Autenticação 2FA", "desc-2fa": "Adiciona proteção extra.", "label-email": "Alertas de Email", "desc-email": "Receba alertas por transação.", "btn-save": "Salvar", "btn-upd": "Atualizar" }
+        };
+
+        function applyLanguage() {
+            const lang = document.getElementById('langPicker').value;
+            document.body.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.querySelectorAll('.trn').forEach(el => {
+                const key = el.getAttribute('data-key');
+                el.innerText = i18n[lang][key];
+            });
+            localStorage.setItem('lang', lang);
+        }
+
+        function toggleTheme() {
+            const target = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', target);
+            localStorage.setItem('theme', target);
+        }
+
+        function showTab(e, id) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+            document.getElementById(id).classList.add('active');
+        }
+
+        window.onload = () => {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.body.setAttribute('data-theme', savedTheme);
+            document.getElementById('themeToggle').checked = (savedTheme === 'dark');
+            const savedLang = localStorage.getItem('lang') || 'en';
+            document.getElementById('langPicker').value = savedLang;
+            applyLanguage();
+        };
+    </script>
+</body>
+</html>

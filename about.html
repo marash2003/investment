@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Firm | InGro Global</title>
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #050505;
+            --card: #0d0d0d;
+            --gold: #c5a059;
+            --text-main: #ffffff;
+            --text-dim: #909090;
+            --border: rgba(255, 255, 255, 0.07);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 8%; background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000;
+        }
+        .logo { font-size: 1.2rem; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; text-decoration: none; }
+        .nav-links a { text-decoration: none; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-left: 30px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold); }
+
+        /* --- HERO --- */
+        .hero { padding: 120px 8% 60px; text-align: left; }
+        .tag { color: var(--gold); font-size: 10px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 20px; display: block; }
+        .hero h1 { font-size: 3.5rem; font-weight: 200; margin-bottom: 20px; letter-spacing: -1px; }
+        .hero p { color: var(--text-dim); font-size: 1.2rem; max-width: 800px; }
+
+        /* --- THE "NO-OFFICE" ADVANTAGE --- */
+        .advantage-section { padding: 80px 8%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; border-top: 1px solid var(--border); }
+        .adv-text h2 { font-size: 2rem; font-weight: 300; margin-bottom: 20px; }
+        .adv-text p { color: var(--text-dim); margin-bottom: 20px; }
+        
+        /* --- PILLARS GRID --- */
+        .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; padding: 0 8% 100px; }
+        .pillar-card { background: var(--card); border: 1px solid var(--border); padding: 40px; transition: 0.3s; }
+        .pillar-card:hover { border-color: var(--gold); background: #111; }
+        .pillar-card i { font-size: 2.5rem; color: var(--gold); margin-bottom: 20px; display: block; }
+        .pillar-card h4 { font-size: 1.2rem; margin-bottom: 10px; font-weight: 400; }
+        .pillar-card p { font-size: 0.9rem; color: var(--text-dim); }
+
+        /* --- SECURITY STATEMENT --- */
+        .security-banner { padding: 100px 8%; background: #0a0a0a; text-align: center; border-top: 1px solid var(--border); }
+        .security-banner h2 { font-size: 2.5rem; font-weight: 200; margin-bottom: 30px; }
+        .security-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 50px; }
+        .sec-item h3 { font-size: 2rem; color: var(--gold); font-weight: 300; margin-bottom: 5px; }
+        .sec-item p { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); }
+
+        /* --- FOOTER --- */
+        footer { padding: 80px 8%; text-align: center; border-top: 1px solid var(--border); opacity: 0.6; }
+
+        @media (max-width: 900px) {
+            .advantage-section, .pillars, .security-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="home.html" class="logo">InGro</a>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="plans.html">Investment Plans</a>
+            <a href="register.html" style="color: var(--gold);">Client Login</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <span class="tag" data-aos="fade-down">The INGRO Story</span>
+        <h1 data-aos="fade-up">A Modern Way to <b>Grow Wealth.</b></h1>
+        <p data-aos="fade-up" data-aos-delay="100">INGRO Global is a private firm that helps people grow their money safely. We believe that professional investing should be simple, private, and available to everyone.</p>
+    </section>
+
+    <section class="advantage-section">
+        <div class="adv-text" data-aos="fade-right">
+            <h2>Why We Don't Use <b>Traditional Offices.</b></h2>
+            <p>Most banks spend millions on big buildings and fancy offices. We don't. By working as a global digital firm, we save money on rent and electricity and put that money back into <b>your</b> profits.</p>
+            <p>This "no-office" model also makes us more secure. Our team works from secure, private locations around the world, making our system much harder to target or attack. We are fast, we are digital, and we are built for the future.</p>
+        </div>
+        <div data-aos="fade-left" style="border-left: 2px solid var(--gold); padding-left: 40px;">
+            <p style="font-style: italic; font-size: 1.3rem; color: #fff;">"In the digital age, a bank is no longer a building. It is a secure promise to protect and grow what you have earned."</p>
+            <p style="margin-top: 20px; color: var(--gold); font-weight: 700;">— The INGRO Team</p>
+        </div>
+    </section>
+
+    <section class="pillars">
+        <div class="pillar-card" data-aos="fade-up">
+            <i class="ph ph-lock-key"></i>
+            <h4>Total Privacy</h4>
+            <p>Your business is your own. We do not share your data with third parties or government agencies unless required by law.</p>
+        </div>
+        <div class="pillar-card" data-aos="fade-up" data-aos-delay="100">
+            <i class="ph ph-shield-check"></i>
+            <h4>Safety First</h4>
+            <p>We use high-level encryption and private accounts to make sure your capital is always protected from market crashes.</p>
+        </div>
+        <div class="pillar-card" data-aos="fade-up" data-aos-delay="200">
+            <i class="ph ph-user-gear"></i>
+            <h4>Human Expertise</h4>
+            <p>We don't just use bots. Our expert managers watch the markets every day to make the best decisions for your money.</p>
+        </div>
+        <div class="pillar-card" data-aos="fade-up" data-aos-delay="300">
+            <i class="ph ph-globe"></i>
+            <h4>Global Access</h4>
+            <p>No matter where you are in the world, you can access your account and withdraw your profits 24/7.</p>
+        </div>
+    </section>
+
+    <section class="security-banner">
+        <span class="tag">By the Numbers</span>
+        <h2 data-aos="fade-up">Trusted by Investors Worldwide.</h2>
+        <div class="security-grid">
+            <div class="sec-item" data-aos="zoom-in">
+                <h3>100%</h3>
+                <p>Capital Protection</p>
+            </div>
+            <div class="sec-item" data-aos="zoom-in" data-aos-delay="100">
+                <h3>24/7</h3>
+                <p>Support Access</p>
+            </div>
+            <div class="sec-item" data-aos="zoom-in" data-aos-delay="200">
+                <h3>No</h3>
+                <p>Hidden Fees</p>
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 100px 8%; text-align: center;">
+        <h2 style="font-weight: 200; margin-bottom: 30px;">Ready to start your journey?</h2>
+        <a href="plans.html" style="color: var(--gold); text-decoration: none; border: 1px solid var(--gold); padding: 15px 40px; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; font-weight: 700;">View Investment Plans</a>
+    </section>
+
+    <footer>
+        <div class="logo" style="margin-bottom: 20px;">InGro</div>
+        <p style="font-size: 10px; letter-spacing: 2px;">&copy; 2026 InGro LOBAL PRIVATE MANAGEMENT.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
